@@ -7,3 +7,7 @@ commands:
   description: "Short command to reset all mines!"
   usage: "/mr"
   permission: minereset.command.resetall
+ autoreset:
+  description: "Enable / disable autoreset"
+  usage: "/autoreset"
+  permission: amr.autoreset
