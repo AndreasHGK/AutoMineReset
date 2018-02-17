@@ -19,7 +19,7 @@ class Main extends PluginBase{
 	public $prefix = AutoMineReset;
 	public $paused = false;
 	public $autopaused = false;
-	public $interval = $this->getConfig()->get('reset-time');
+	public $interval = 600;
 	public $seconds = 0;
 	
 	public function onLoad(){
@@ -29,6 +29,7 @@ class Main extends PluginBase{
 				$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::YELLOW." Config is setup incorrectly!");
 			}
 		}
+		$interval = $this->getConfig()->get('reset-time');
 	}
 	
 	public function onEnable(){
@@ -118,6 +119,7 @@ class Main extends PluginBase{
 		}
 	}
 	
+}
 }
 
 ?>
