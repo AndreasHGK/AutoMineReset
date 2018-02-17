@@ -34,22 +34,24 @@ class Main extends PluginBase{
 	
 	public function onEnable(){
 		$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." Enabled!");
-		$current_time = time();
+		$current_time = time();	
+		setInterval(update,1000);
+		setInterval(betterTimer,1000);
 	}
 	
-	setInterval(public function update(){
+	public function update(){
 		autoresettask;
 		autostop;
-	},1000);
+		}
 	
-	setInterval(public function betterTimer(){
-		if(pause == false) && {
+	function betterTimer(){
+		if(pause == false){
 			$seconds++;
 		}
 		if($seconds > $interval){
 			$seconds = 0;
 		}
-	},1000)
+	}
 	
 	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
 		if(strtolower($cmd->getName()) == "mr"){
@@ -61,11 +63,7 @@ class Main extends PluginBase{
 			else{
             $sender->sendMessage(TextFormat::RED . "You do not have permission to run this command." . TextFormat::RESET);
             }
-		}
-	
-	}
-	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
-		if(strtolower($cmd->getName()) == "autoreset"){
+		} elseif(strtolower($cmd->getName()) == "autoreset"){
 			if($sender->hasPermission("amr.autoreset")){
 				if($paused === true){
 				$paused = false;
@@ -81,6 +79,9 @@ class Main extends PluginBase{
             $sender->sendMessage(TextFormat::RED . "You do not have permission to run this command." . TextFormat::RESET);
 		}
 	}
+	
+	}
+
 	public function autostop(){
 			if($this->getConfig()->get('sleep-when-empty') == true){
 				if(count($this->getServer()->getOnlinePlayers()) < 0){
@@ -104,12 +105,12 @@ class Main extends PluginBase{
                     if ($mine->reset()) { // Only reset if valid
                         $success++;
                         $this->getApi()->getResetProgressManager()->addObserver($mine->getName(), $sender);
+						$this->getServer()-broadcastMessage(C::BOLD.C::RED."All mines have been reset!")
                     }
                 }
             }
-			$this->getServer()-broadcastMessage(C::BOLD.C::RED."All mines have been reset!")
+			
 	}
-	
 	public function onDisable(){
 		$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." Disabled!");
 	}
@@ -120,6 +121,4 @@ class Main extends PluginBase{
 	}
 	
 }
-}
-
 ?>
