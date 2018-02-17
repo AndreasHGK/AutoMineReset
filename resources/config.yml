@@ -1,0 +1,5 @@
+#Stops timer when nobody is on the server. Can help prevent lagg!
+sleep-when-empty: true
+
+#time between resets in seconds.
+reset-time: 600
