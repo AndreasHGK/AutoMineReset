@@ -36,13 +36,13 @@ class Main extends PluginBase{
 	public function onEnable(){
 		$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." Enabled!");
 		$current_time = time();	
-		setInterval(update,1000);
-		setInterval(betterTimer,1000);
+		setInterval(update(),1000);
+		setInterval(betterTimer(),1000);
 	}
 	
 	public function update(){
-		autoresettask;
-		autostop;
+		autoresettask();
+		autostop();
 		}
 	
 	function betterTimer(){
@@ -57,7 +57,7 @@ class Main extends PluginBase{
 	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
 		if(strtolower($cmd->getName()) == "mr"){
 			if($sender->hasPermission("minereset.command.resetall")){
-				resetAll;
+				resetAll();
             $count = count($this->getApi()->getMineManager());
             $sender->sendMessage("Queued reset for {$success}/{$count} mines.");
 			}
@@ -111,7 +111,7 @@ class Main extends PluginBase{
 	}
 	public function autoresettask(){
 		while($seconds >= $interval){
-			resetAll;
+			resetAll();
 		}
 	}
 	
