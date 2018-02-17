@@ -19,9 +19,8 @@ class Main extends PluginBase{
 	public $prefix = AutoMineReset;
 	public $paused = false;
 	public $autopaused = false;
-	public $target = mktime(0,0,$timerseconds > $this->getConfig()->get('reset-time'))
-	public $current_time = time();
-	public $difference = 0;
+	public $interval = $this->getConfig()->get('reset-time');
+	public $seconds = 0;
 	
 	public function onLoad(){
 		$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." Loading...");
@@ -35,25 +34,26 @@ class Main extends PluginBase{
 	public function onEnable(){
 		$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." Enabled!");
 		$current_time = time();
-		$difference = $current_time + $target;
 	}
 	
-	public function update(){
-		
-	}
+	setInterval(public function update(){
+		autoresettask;
+		autostop;
+	},1000);
+	
+	setInterval(public function betterTimer(){
+		if(pause == false) && {
+			$seconds++;
+		}
+		if($seconds > $interval){
+			$seconds = 0;
+		}
+	},1000)
 	
 	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
 		if(strtolower($cmd->getName()) == "mr"){
 			if($sender->hasPermission("minereset.command.resetall")){
-				         $success = 0;
-            foreach ($this->getApi()->getMineManager() as $mine) {
-                if ($mine instanceof Mine) {
-                    if ($mine->reset()) { // Only reset if valid
-                        $success++;
-                        $this->getApi()->getResetProgressManager()->addObserver($mine->getName(), $sender);
-                    }
-                }
-            }
+				resetAll;
             $count = count($this->getApi()->getMineManager());
             $sender->sendMessage("Queued reset for {$success}/{$count} mines.");
 			}
@@ -68,7 +68,6 @@ class Main extends PluginBase{
 			if($sender->hasPermission("amr.autoreset")){
 				if($paused === true){
 				$paused = false;
-				$difference = $current_time + $target;
 				$sender->sendMessage(C::BOLD.C::GREEN."Autoreset enabled!");
 				$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." The timer has been enabled by ".$sender."!");
 				}else{
@@ -81,7 +80,7 @@ class Main extends PluginBase{
             $sender->sendMessage(TextFormat::RED . "You do not have permission to run this command." . TextFormat::RESET);
 		}
 	}
-		public function autostop(){
+	public function autostop(){
 			if($this->getConfig()->get('sleep-when-empty') == true){
 				if(count($this->getServer()->getOnlinePlayers()) < 0){
 					if($paused == false){
@@ -92,18 +91,13 @@ class Main extends PluginBase{
 					}elseif($autopaused == true) {
 						$paused = false;
 						$autopaused = false;
-						$difference = $current_time + $target;
 						$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." The timer has been auto-enabled!");
 					}
 			}
 		}
 	
-	public function onDisable(){
-		$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." Disabled!");
-	}
-	public function timercheck(){
-		while($current_time > $difference){
-				$success = 0;
+	public function resetAll(){
+						$success = 0;
             foreach ($this->getApi()->getMineManager() as $mine) {
                 if ($mine instanceof Mine) {
                     if ($mine->reset()) { // Only reset if valid
@@ -112,10 +106,15 @@ class Main extends PluginBase{
                     }
                 }
             }
-            $count = count($this->getApi()->getMineManager());
-            $sender->sendMessage("Queued reset for {$success}/{$count} mines.");
-			
-			$difference = $current_time + $target;
+			$this->getServer()-broadcastMessage(C::BOLD.C::RED."All mines have been reset!")
+	}
+	
+	public function onDisable(){
+		$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." Disabled!");
+	}
+	public function autoresettask(){
+		while($seconds >= $interval){
+			resetAll;
 		}
 	}
 	
