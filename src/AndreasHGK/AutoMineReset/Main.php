@@ -2,7 +2,7 @@
 
 namespace AndreasHGK\AutoMineReset;
 
-use pcoketmine\plugin\PluginBase;
+use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
