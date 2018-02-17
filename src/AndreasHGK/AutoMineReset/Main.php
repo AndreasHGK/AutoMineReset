@@ -8,6 +8,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\Player;
 use pocketmine\Server;
+use pocketmine\event\Listener;
 use pocketmine\utils\TextFormat as C;
 
 use AndreasHGK\AutoMineReset\TimedReset\ResetMine;
@@ -97,20 +98,14 @@ class Main extends PluginBase{
 					}
 			}
 		}
-	
 	public function resetAll(){
-						$success = 0;
-            foreach ($this->getApi()->getMineManager() as $mine) {
-                if ($mine instanceof Mine) {
-                    if ($mine->reset()) { // Only reset if valid
-                        $success++;
-                        $this->getApi()->getResetProgressManager()->addObserver($mine->getName(), $sender);
-						$this->getServer()-broadcastMessage(C::BOLD.C::RED."All mines have been reset!")
-                    }
-                }
-            }
-			
+		$server->dispatchCommand(new ConsoleCommandSender(), 'mine reset-all');
+		
+		foreach($this->getServer()->getOnlinePlayers() as $p){
+			$p->sendMessage(C::BOLD.C::RED."All mines have been reset!");
+		}
 	}
+	
 	public function onDisable(){
 		$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." Disabled!");
 	}
