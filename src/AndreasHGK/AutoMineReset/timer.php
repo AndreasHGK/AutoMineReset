@@ -5,7 +5,7 @@ namespace AndreasHGK\AutoMineReset;
 use pocketmine\scheduler\PluginTask;
 use AndreasHGK\AutoMineReset\Main;
 
-class YourTask extends PluginTask {
+class timer extends PluginTask {
 
     public $plugin;
     public $seconds = 0;
