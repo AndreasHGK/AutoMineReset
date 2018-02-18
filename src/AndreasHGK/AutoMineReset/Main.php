@@ -105,7 +105,7 @@ class Main extends PluginBase{
 			$this->resetAll();
 		}
 	}
-		public function update(){
+	function update(){
 		$current_time = time();	
 		$this->autoresettask();
 		$this->autostop();
