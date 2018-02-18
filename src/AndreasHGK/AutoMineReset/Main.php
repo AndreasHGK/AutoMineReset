@@ -34,9 +34,8 @@ class Main extends PluginBase{
 	public function onEnable(){
 		$this->getLogger()->notice(C::GREEN." Enabled!");
 		$current_time = time();	
-		function setInterval(
-		$this->update()
-		$this->betterTimer(),1000);
+		setInterval(update(),1000);
+		setInterval(bettertimer(),1000);
 	}
 	
 	public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool{
@@ -100,7 +99,6 @@ class Main extends PluginBase{
 		}
 	}
 	public function update() {
-		$current_time = time();	
 		$this->autoresettask();
 		$this->autostop();
 		}
