@@ -1,9 +1,9 @@
 <?php
 
-namespace name\space;
+namespace AndreasHGK\AutoMineReset;
 
 use pocketmine\scheduler\PluginTask;
-use plugin\Main;
+use AndreasHGK\AutoMineReset\Main;
 
 class YourTask extends PluginTask {
 
