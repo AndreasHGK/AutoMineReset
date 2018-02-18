@@ -81,7 +81,7 @@ class Main extends PluginBase{
 						$autopaused = true;
 						$this->getLogger()->notice(C::GREEN." The timer has been auto-disabled!");
 					}
-					}elseif($autopaused == true) {
+					} else {
 						$paused = false;
 						$autopaused = false;
 						$this->getLogger()->notice(C::GREEN." The timer has been auto-enabled!");
