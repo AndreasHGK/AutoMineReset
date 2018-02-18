@@ -18,24 +18,6 @@ class Main extends PluginBase{
 	public $autopaused = false;
 	public $interval = 600;
 	public $seconds = 0;
-	public $tasks = [];
-
-	public function createTask() {
-  		$task = new YourTask($this); // A class that extends pocketmine\scheduler\PluginTask
-  		// The Task handler
-   		$h = $this->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
-  		// Set the task's handler
-   		$task->setHandler($h);
-   		// Add the task to the array
-  		$this->tasks[$task->getTaskId()] = $task->getTaskId();
-	}
-	
-	public function removeTask($id) {
-    		// Removes the task from your array of tasks
-  		unset($this->tasks[$id]);
-    		// Cancels the task and stops it from running
-   		 $this->getServer()->getScheduler()->cancelTask($id);
-	}
 	
 	public function onLoad(){
 		$this->getLogger()->notice(C::GREEN." Loading...");
