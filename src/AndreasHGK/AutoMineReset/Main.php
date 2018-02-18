@@ -98,13 +98,13 @@ class Main extends PluginBase{
 			$this->resetAll();
 		}
 	}
-	function update(){
+	public function update(){
 		$current_time = time();	
 		$this->autoresettask();
 		$this->autostop();
 		}
 	
-	function betterTimer(){
+	public function betterTimer(){
 		if(pause == false){
 			$seconds++;
 		}
