@@ -2,6 +2,7 @@
 
 namespace AndreasHGK\AutoMineReset;
 
+use pocketmine\command\CommandExecutor;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\command\CommandSender;
@@ -41,6 +42,7 @@ class Main extends PluginBase{
 	}
 	
 	public function update(){
+		$current_time = time();	
 		autoresettask();
 		autostop();
 		}
@@ -54,7 +56,7 @@ class Main extends PluginBase{
 		}
 	}
 	
-	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
+	public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool{
 		if(strtolower($cmd->getName()) == "mr"){
 			if($sender->hasPermission("minereset.command.resetall")){
 				resetAll();
