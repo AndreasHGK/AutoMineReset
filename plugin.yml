@@ -1,6 +1,6 @@
 name: AutoMineReset
 main: AndreasHGK\AutoMineReset\Main
-version: 0.2.3
+version: 0.2.5
 api: [3.0.0-ALPHA7, 3.0.0-ALPHA8, 3.0.0-ALPHA9, 3.0.0-ALPHA10]
 commands:
  mr:
