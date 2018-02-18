@@ -60,8 +60,6 @@ class Main extends PluginBase{
 		if(strtolower($cmd->getName()) == "mr"){
 			if($sender->hasPermission("minereset.command.resetall")){
 				resetAll();
-            $count = count($this->getApi()->getMineManager());
-            $sender->sendMessage("Queued reset for {$success}/{$count} mines.");
 			}
 			else{
             $sender->sendMessage(TextFormat::RED . "You do not have permission to run this command." . TextFormat::RESET);
