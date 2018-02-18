@@ -38,8 +38,10 @@ class Main extends PluginBase{
 	public function onEnable(){
 		$this->getLogger()->notice(C::GREEN." Enabled!");
 		$current_time = time();	
-		setInterval(function(){$this->update()},1000);
-		setInterval(function(){$this->betterTimer}(),1000);
+		setInterval(function(){
+			$this->update();
+			$this->betterTimer();
+		},1000);
 	}
 	
 	public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool{
