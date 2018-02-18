@@ -25,6 +25,8 @@ class Main extends PluginBase{
 	
 	public function onLoad(){
 		$this->getLogger()->notice(C::GREEN." Loading...");
+		$this->saveDefaultConfig();
+        	$this->reloadConfig();
 		if(is_int($this->getConfig()->get('reset-time')) == false){
 			if(is_bool($timerseconds > $this->getConfig()->get('sleep-when-empty')) == false){
 				$this->getLogger()->notice(C::BOLD.C::RED."[FATAL]".C::RESET.C::YELLOW." Config is setup incorrectly!");
@@ -36,14 +38,14 @@ class Main extends PluginBase{
 	public function onEnable(){
 		$this->getLogger()->notice(C::GREEN." Enabled!");
 		$current_time = time();	
-		setInterval(update(),1000);
-		setInterval(betterTimer(),1000);
+		setInterval($this->update(),1000);
+		setInterval($this->betterTimer(),1000);
 	}
 	
 	public function update(){
 		$current_time = time();	
-		autoresettask();
-		autostop();
+		$this->autoresettask();
+		$this->autostop();
 		}
 	
 	function betterTimer(){
@@ -58,7 +60,7 @@ class Main extends PluginBase{
 	public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool{
 		if(strtolower($cmd->getName()) == "mr"){
 			if($sender->hasPermission("minereset.command.resetall")){
-				resetAll();
+				$this->resetAll();
 				$count = count($this->getApi()->getMineManager());
 				$sender->sendMessage("Queued reset for {$success}/{$count} mines.");
 			}
@@ -112,7 +114,7 @@ class Main extends PluginBase{
 	}
 	public function autoresettask(){
 		while($seconds >= $interval){
-			resetAll();
+			$this->resetAll();
 		}
 	}
 	
