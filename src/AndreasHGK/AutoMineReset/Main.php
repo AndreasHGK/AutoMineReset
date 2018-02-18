@@ -18,24 +18,23 @@ use AndreasHGK\AutoMineReset\Timer;
 
 class Main extends PluginBase{
 	
-	public $prefix = AutoMineReset;
 	public $paused = false;
 	public $autopaused = false;
 	public $interval = 600;
 	public $seconds = 0;
 	
 	public function onLoad(){
-		$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." Loading...");
+		$this->getLogger()->notice(C::BOLD.C::RED."[AutoMineReset]".C::RESET.C::GREEN." Loading...");
 		if(is_int($timerseconds > $this->getConfig()->get('reset-time')) == false){
 			if(is_bool($timerseconds > $this->getConfig()->get('sleep-when-empty')) == false){
-				$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::YELLOW." Config is setup incorrectly!");
+				$this->getLogger()->notice(C::BOLD.C::RED."[AutoMineReset]".C::RESET.C::YELLOW." Config is setup incorrectly!");
 			}
 		}
 		$interval = $this->getConfig()->get('reset-time');
 	}
 	
 	public function onEnable(){
-		$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." Enabled!");
+		$this->getLogger()->notice(C::BOLD.C::RED."[AutoMineReset]".C::RESET.C::GREEN." Enabled!");
 		$current_time = time();	
 		setInterval(update(),1000);
 		setInterval(betterTimer(),1000);
@@ -91,12 +90,12 @@ class Main extends PluginBase{
 					if($paused == false){
 						$paused = true;
 						$autopaused = true;
-						$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." The timer has been auto-disabled!");
+						$this->getLogger()->notice(C::BOLD.C::RED."[AutoMineReset]".C::RESET.C::GREEN." The timer has been auto-disabled!");
 					}
 					}elseif($autopaused == true) {
 						$paused = false;
 						$autopaused = false;
-						$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." The timer has been auto-enabled!");
+						$this->getLogger()->notice(C::BOLD.C::RED."[AutoMineReset]".C::RESET.C::GREEN." The timer has been auto-enabled!");
 					}
 			}
 		}
@@ -109,7 +108,7 @@ class Main extends PluginBase{
 	}
 	
 	public function onDisable(){
-		$this->getLogger()->notice(C::BOLD.C::RED."[".$this->prefix."]".C::RESET.C::GREEN." Disabled!");
+		$this->getLogger()->notice(C::BOLD.C::RED."[AutoMineReset]".C::RESET.C::GREEN." Disabled!");
 	}
 	public function autoresettask(){
 		while($seconds >= $interval){
