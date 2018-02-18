@@ -1,7 +1,5 @@
 <?php
-
 namespace AndreasHGK\AutoMineReset;
-
 use pocketmine\command\CommandExecutor;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
@@ -11,11 +9,9 @@ use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\event\Listener;
 use pocketmine\utils\TextFormat as C;
-
 use AndreasHGK\AutoMineReset\TimedReset\ResetMine;
 use falkirks\minereset\Mine;
 use AndreasHGK\AutoMineReset\Timer;
-
 class Main extends PluginBase{
 	
 	public $paused = false;
@@ -38,12 +34,8 @@ class Main extends PluginBase{
 	public function onEnable(){
 		$this->getLogger()->notice(C::GREEN." Enabled!");
 		$current_time = time();	
-		//setInterval(function(){
-		//	$this->update();
-		//	$this->betterTimer();
-		//},1000);
-		$this->update();
-		$this->betterTimer();
+		setInterval("$this->update()",1000);
+		setInterval("$this->betterTimer()",1000);
 	}
 	
 	public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool{
@@ -74,9 +66,7 @@ class Main extends PluginBase{
 	}
 	
 	}
-
 	public function autostop(){
-		setInterval('function(){
 			if($this->getConfig()->get('sleep-when-empty') == true){
 				if(count($this->getServer()->getOnlinePlayers()) < 0){
 					if($paused == false){
@@ -89,7 +79,7 @@ class Main extends PluginBase{
 						$autopaused = false;
 						$this->getLogger()->notice(C::GREEN." The timer has been auto-enabled!");
 					}
-			}'},1000);
+			}
 		}
 	public function resetAll(){
 		$server->dispatchCommand(new ConsoleCommandSender(), 'mine reset-all');
@@ -104,30 +94,23 @@ class Main extends PluginBase{
 	}
 	
 	public function autoresettask(){
-		setInterval('function(){
-		// $this->resetAll();
-		if($seconds >= $interval){
-		$server->dispatchCommand(new ConsoleCommandSender(), 'mine reset-all');
-		
-		foreach($this->getServer()->getOnlinePlayers() as $p){
-		$p->sendMessage(C::BOLD.C::RED."All mines have been reset!");
+		while($seconds >= $interval){
+			$this->resetAll();
 		}
-		}'},1000);
 	}
 	function update(){
-//		setInterval(
+		$current_time = time();	
 		$this->autoresettask();
 		$this->autostop();
-		}//,1000);
+		}
 	
 	function betterTimer(){
-		setInterval('function(){
 		if(pause == false){
 			$seconds++;
 		}
 		if($seconds > $interval){
 			$seconds = 0;
-		}'},1000);
+		}
 	}
 	
 }
