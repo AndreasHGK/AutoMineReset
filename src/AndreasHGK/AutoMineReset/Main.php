@@ -38,23 +38,8 @@ class Main extends PluginBase{
 	public function onEnable(){
 		$this->getLogger()->notice(C::GREEN." Enabled!");
 		$current_time = time();	
-		setInterval($this->update(),1000);
-		setInterval($this->betterTimer(),1000);
-	}
-	
-	public function update(){
-		$current_time = time();	
-		$this->autoresettask();
-		$this->autostop();
-		}
-	
-	function betterTimer(){
-		if(pause == false){
-			$seconds++;
-		}
-		if($seconds > $interval){
-			$seconds = 0;
-		}
+		setInterval(function(){$this->update()},1000);
+		setInterval(function(){$this->betterTimer}(),1000);
 	}
 	
 	public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool{
@@ -112,9 +97,24 @@ class Main extends PluginBase{
 	public function onDisable(){
 		$this->getLogger()->notice(C::GREEN." Disabled!");
 	}
+	
 	public function autoresettask(){
 		while($seconds >= $interval){
 			$this->resetAll();
+		}
+	}
+		public function update(){
+		$current_time = time();	
+		$this->autoresettask();
+		$this->autostop();
+		}
+	
+	function betterTimer(){
+		if(pause == false){
+			$seconds++;
+		}
+		if($seconds > $interval){
+			$seconds = 0;
 		}
 	}
 	
