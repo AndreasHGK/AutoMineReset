@@ -76,7 +76,7 @@ class Main extends PluginBase{
 	}
 
 	public function autostop(){
-		setInterval(
+		setInterval( function(){
 			if($this->getConfig()->get('sleep-when-empty') == true){
 				if(count($this->getServer()->getOnlinePlayers()) < 0){
 					if($paused == false){
@@ -89,7 +89,7 @@ class Main extends PluginBase{
 						$autopaused = false;
 						$this->getLogger()->notice(C::GREEN." The timer has been auto-enabled!");
 					}
-			},1000);
+			}},1000);
 		}
 	public function resetAll(){
 		$server->dispatchCommand(new ConsoleCommandSender(), 'mine reset-all');
@@ -104,7 +104,7 @@ class Main extends PluginBase{
 	}
 	
 	public function autoresettask(){
-		setInterval(
+		setInterval( function(){
 		// $this->resetAll();
 		if($seconds >= $interval){
 		$server->dispatchCommand(new ConsoleCommandSender(), 'mine reset-all');
@@ -112,22 +112,22 @@ class Main extends PluginBase{
 		foreach($this->getServer()->getOnlinePlayers() as $p){
 		$p->sendMessage(C::BOLD.C::RED."All mines have been reset!");
 		}
-		},1000);
+		}},1000);
 	}
-//	function update(){
+	function update(){
 //		setInterval(
 		$this->autoresettask();
 		$this->autostop();
-//		},1000);
+		}//,1000);
 	
 	function betterTimer(){
-		setInterval(
+		setInterval(function(){
 		if(pause == false){
 			$seconds++;
 		}
 		if($seconds > $interval){
 			$seconds = 0;
-		},1000);
+		}},1000);
 	}
 	
 }
