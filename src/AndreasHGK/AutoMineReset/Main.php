@@ -14,13 +14,12 @@ use falkirks\minereset\Mine;
 use AndreasHGK\AutoMineReset\Timer;
 class Main extends PluginBase{
 	
-	public $paused = false;
-	public $autopaused = false;
-	public $interval = 600;
-	public $seconds = 0;
-	
 	public function onLoad(){
 		$this->getLogger()->notice(C::GREEN." Loading...");
+		$paused = false;
+		$autopaused = false;
+		$interval = 600;
+		$sec = 0;
 		$this->saveDefaultConfig();
         	$this->reloadConfig();
 		if(is_int($this->getConfig()->get('reset-time')) == false){
@@ -29,14 +28,31 @@ class Main extends PluginBase{
 			}
 		}
 		$interval = $this->getConfig()->get('reset-time');
+	global $paused;
+	global $autopaused;
+	global $interval;
+	global $sec;
 	}
 	
 	public function onEnable(){
+		if(!isset($sec)){
+    	$sec = 0;
+		}
 		$this->getLogger()->notice(C::GREEN." Enabled!");
 		$current_time = time();	
-		setInterval(update(),1000);
-		setInterval(bettertimer(),1000);
+		
+		$this->setInterval($this->update($this->getConfig()->get('reset-time')),1000);
 	}
+	
+	public function setInterval($f, $milliseconds)
+		{
+			$seconds=(int)$milliseconds/1000;
+			while(true)
+			{
+				$f();
+				sleep($seconds);
+			}
+		}
 	
 	public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool{
 		if(strtolower($cmd->getName()) == "mr"){
@@ -93,22 +109,26 @@ class Main extends PluginBase{
 		$this->getLogger()->notice(C::GREEN." Disabled!");
 	}
 	
-	public function autoresettask(){
-		while($seconds >= $interval){
+	public function autoresettask($in){
+		while($sec >= $in){
 			$this->resetAll();
 		}
 	}
-	public function update() {
-		$this->autoresettask();
+	public function update($interval2) {
+		if(!isset($interval2)){
+    	$interval = 600;
+	}
+		$this->autoresettask($interval2);
 		$this->autostop();
+		$this->bettertimer();
 		}
 	
 	public function betterTimer() {
 		if(pause == false){
-			$seconds++;
+			$sec++;
 		}
-		if($seconds > $interval){
-			$seconds = 0;
+		if($sec > $interval){
+			$sec = 0;
 		}
 	}
 	
