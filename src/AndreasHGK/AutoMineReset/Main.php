@@ -6,6 +6,7 @@ use pocketmine\utils\Config;
 use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
 use pocketmine\command\Command;
+use pocketmine\scheduler\PluginTask;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\event\Listener;
@@ -13,9 +14,9 @@ use pocketmine\utils\TextFormat as C;
 class Main extends PluginBase{
 	
 	public $paused = false;
-	public $sec = 0;
+	private $sec = 0;
 	public $autopaused = false;
-	public $interval = 600;
+	private $interval = 600;
 	
 	public function onLoad(){
 		$this->getLogger()->notice(C::GREEN." Loading...");
@@ -30,17 +31,12 @@ class Main extends PluginBase{
 	}
 	
 	public function prepLoop(){
-		global $interval;
-		global $sec;
-		$sec = 1;
-		$interval = $this->getConfig()->get('reset-time');
-		$milliseconds = 1000;
-		$seconds=(int)$milliseconds/1000;
-			while(true)
-			{
-				$this->update();
-				sleep($seconds);
-			}
+		$this->sec = 1;
+		$this->interval = $this->getConfig()->get('reset-time');
+		$this->milliseconds = 1000;
+		$task = new Updater($this); // A class that extends pocketmine\scheduler\PluginTask
+		// The Task handler
+		$h = $this->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
 	}
 	
 	public function onEnable(){
@@ -50,14 +46,10 @@ class Main extends PluginBase{
 	
 	
 	public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool{
-		global $autopaused;
-		global $paused;
 		switch($command->getName()){
 			case mr:
 			if($sender->hasPermission("minereset.command.resetall")){
 				$this->resetAll();
-				$count = count($this->getApi()->getMineManager());
-				$sender->sendMessage("Queued reset for {$success}/{$count} mines.");
 			}
 			else{
             $sender->sendMessage(TextFormat::RED . "You do not have permission to run this command." . TextFormat::RESET);
@@ -65,15 +57,15 @@ class Main extends PluginBase{
 		
 		case autoreset:
 			if($sender->hasPermission("amr.autoreset")){
-				if($paused == true){
-				$paused = false;
+				if($this->paused == true){
+				$this->paused = false;
 				$sender->sendMessage(C::BOLD.C::GREEN."Autoreset enabled!");
 				$this->getLogger()->notice(C::GREEN." The timer has been enabled by ".$sender."!");
 				}else{
-				$paused = true;
+				$this->paused = true;
 				$sender->sendMessage(C::BOLD.C::GREEN."Autoreset disabled!");
 				$this->getLogger()->notice(C::GREEN." The timer has been disabled by ".$sender."!");
-				$autopaused = false;
+				$this->autopaused = false;
 				}
 			} else {
             $sender->sendMessage(TextFormat::RED . "You do not have permission to run this command." . TextFormat::RESET);
@@ -82,23 +74,21 @@ class Main extends PluginBase{
 	
 	public function autostop(){
 		static $y = false;
-		global $paused;
-		global $autopaused;
 			if($this->getConfig()->get('sleep-when-empty') == true){
-				if(count($this->getServer()->getOnlinePlayers()) < 0){
-					if($paused == false){
+				if(count($this->getServer()->getOnlinePlayers()) != 0){
+					if($this->paused == true){
 						if($y == true){
-						$paused = false;
-						$autopaused = false;
+						$this->paused = false;
+						$this->autopaused = false;
 						$y = false;
 						$this->getLogger()->notice(C::GREEN." The timer has been auto-enabled!");
 						}
 					}
 					} else {
 						if($y == false) {
-						$paused = true;
+						$this->paused = true;
 						$y = true;
-						$autopaused = true;
+						$this->autopaused = true;
 						$this->getLogger()->notice(C::GREEN." The timer has been auto-disabled!");
 						}
 					}
@@ -119,25 +109,20 @@ class Main extends PluginBase{
 	public function update() {
 		$this->autostop();
 		$this->bettertimer();
-		global $sec;
-		global $interval;
-		if($sec >= $interval){
+		if($this->sec >= $this->interval){
 			$this->resetAll();
 		}
 		}
 	
 	public function betterTimer() {
-		global $interval;
-		global $paused;
-		global $sec;
-		if($paused == false){
-			$sec++;
+		if($this->paused == false){
+			$this->sec++;
 		}
-		if($sec > $interval){
-			$sec = 1;
+		if($this->sec > $this->interval){
+			$this->sec = 1;
 		}
-		//$this->getLogger()->notice(C::GREEN." Debug says(sec): ".$sec);
-		//$this->getLogger()->notice(C::GREEN." Debug says(int): ".$interval);
+		//$this->getLogger()->notice(C::GREEN."Debug: ".$this->sec);
+		//$this->getLogger()->notice(C::GREEN."Debug: ".$this->interval);
 	}
 	
 }
