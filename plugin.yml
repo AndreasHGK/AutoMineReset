@@ -1,7 +1,7 @@
 name: AutoMineReset
 main: AndreasHGK\AutoMineReset\Main
 version: 0.3.4
-api: [3.0.0-ALPHA7, 3.0.0-ALPHA8, 3.0.0-ALPHA9, 3.0.0-ALPHA10, 3.0.0-ALPHA11, 3.0.0-ALPHA12,3.0.0-ALPHA13, 3.0.0-ALPHA14]
+api: [3.0.0-ALPHA7, 3.0.0-ALPHA8, 3.0.0-ALPHA9, 3.0.0-ALPHA10, 3.0.0-ALPHA11, 3.0.0-ALPHA12]
 load: POSTWORLD
 description: Makes your mines reset after a certain amount of time
 commands:
