@@ -34,8 +34,7 @@ class Main extends PluginBase{
 		$this->sec = 1;
 		$this->interval = $this->getConfig()->get('reset-time');
 		$this->milliseconds = 1000;
-		$task = new Updater($this); // A class that extends pocketmine\scheduler\PluginTask
-		// The Task handler
+		$task = new Updater($this);
 		$h = $this->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
 	}
 	
@@ -46,31 +45,36 @@ class Main extends PluginBase{
 	
 	
 	public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool{
-		switch($command->getName()){
-			case mr:
+		switch(strtolower($cmd->getName())){
+			case "mr";
 			if($sender->hasPermission("minereset.command.resetall")){
 				$this->resetAll();
+				return true;
 			}
 			else{
-            $sender->sendMessage(TextFormat::RED . "You do not have permission to run this command." . TextFormat::RESET);
+            $sender->sendMessage(C::RED . "You do not have permission to run this command." . C::RESET);
+			return true;
             }
-		
-		case autoreset:
+			break;
+		case "autoreset":
 			if($sender->hasPermission("amr.autoreset")){
 				if($this->paused == true){
 				$this->paused = false;
-				$sender->sendMessage(C::BOLD.C::GREEN."Autoreset enabled!");
-				$this->getLogger()->notice(C::GREEN." The timer has been enabled by ".$sender."!");
+				$sender->sendMessage(C::BOLD.C::AQUA."»".C::RESET.C::DARK_AQUA." Automatic reset has been ".C::GREEN."enabled".C::DARK_AQUA."!");
+				$this->getLogger()->notice(C::GREEN." The timer has been enabled by ".$sender->getName()."!");
 				}else{
 				$this->paused = true;
-				$sender->sendMessage(C::BOLD.C::GREEN."Autoreset disabled!");
-				$this->getLogger()->notice(C::GREEN." The timer has been disabled by ".$sender."!");
+				$sender->sendMessage(C::BOLD.C::AQUA."»".C::RESET.C::DARK_AQUA." Automatic reset has been ".C::RED."disabled".C::DARK_AQUA."!");
+				$this->getLogger()->notice(C::GREEN." The timer has been disabled by ".$sender->getName()."!");
 				$this->autopaused = false;
 				}
 			} else {
-            $sender->sendMessage(TextFormat::RED . "You do not have permission to run this command." . TextFormat::RESET);
+            $sender->sendMessage(C::RED . "You do not have permission to run this command." . C::RESET);
 		}
-	}}
+		return true;
+		break;
+	}
+	}
 	
 	public function autostop(){
 		static $y = false;
@@ -95,10 +99,10 @@ class Main extends PluginBase{
 			}
 		}
 	public function resetAll(){
-		$cmd = "mine reset-all";
-		$this->getServer()->dispatchCommand(new ConsoleCommandSender(),$cmd);
+		$command = "mine reset-all";
+		$this->getServer()->dispatchCommand(new ConsoleCommandSender(),$command);
 		
-		Server::getInstance()->broadcastMessage(C::BOLD.C::DARK_RED."[AutoMineReset] ".C::RESET.C::YELLOW." All mines have been reset!");
+		Server::getInstance()->broadcastMessage(C::BOLD.C::AQUA."»".C::RESET.C::DARK_AQUA." All mines have been reset!");
 		}
 	
 	
@@ -121,8 +125,8 @@ class Main extends PluginBase{
 		if($this->sec > $this->interval){
 			$this->sec = 1;
 		}
-		//$this->getLogger()->notice(C::GREEN."Debug: ".$this->sec);
-		//$this->getLogger()->notice(C::GREEN."Debug: ".$this->interval);
+		//$this->getLogger()->notice(C::GREEN."Debug(sec): ".$this->sec);
+		//$this->getLogger()->notice(C::GREEN."Debug(interval): ".$this->interval);
 	}
 	
 }
