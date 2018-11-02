@@ -1,12 +1,11 @@
 <?php
 namespace AndreasHGK\AutoMineReset;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use AndreasHGK\AutoMineReset\Main as M;
 
-class Updater extends PluginTask {
+class Updater extends Task {
 	
 	public function __construct(Main $plugin){
-        parent::__construct($plugin);
         $this->plugin = $plugin;
     }
 	
