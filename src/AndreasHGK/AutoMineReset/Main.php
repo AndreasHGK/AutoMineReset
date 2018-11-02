@@ -35,7 +35,7 @@ class Main extends PluginBase{
 		$this->interval = $this->getConfig()->get('reset-time');
 		$this->milliseconds = 1000;
 		$task = new Updater($this);
-		$h = $this->getServer()->scheduleRepeatingTask($task, 20);
+		$h = $this->getScheduler()->scheduleRepeatingTask($task, 20);
 	}
 	
 	public function onEnable(){
