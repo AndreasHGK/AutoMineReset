@@ -6,7 +6,7 @@ use pocketmine\utils\Config;
 use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
 use pocketmine\command\Command;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\event\Listener;
@@ -35,7 +35,7 @@ class Main extends PluginBase{
 		$this->interval = $this->getConfig()->get('reset-time');
 		$this->milliseconds = 1000;
 		$task = new Updater($this);
-		$h = $this->getServer()->getScheduler()->scheduleRepeatingTask($task, 20);
+		$h = $this->getScheduler()->scheduleRepeatingTask($task, 20);
 	}
 	
 	public function onEnable(){
